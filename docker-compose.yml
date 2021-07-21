@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+    db:
+        container_name: postgresdb
+        image: postgres
+        hostname: db
+        environment:
+            GET_HOST_FROM: dns
+            POSTGRES_DB: dev
+            POSTGRES_USER: postgres-dev
+            POSTGRES_PASSWORD: mysecretpassword
+        ports:
+            - 5432:5432
+        networks:
+            - postgresnet
+    postgresapi:
+        container_name: postgresapi
+        image: nossu3751/postgresapi
+        hostname: postgresapi
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment: 
+            GET_HOSTS_FROM: dns
+        networks:
+            - postgresnet
+        volumes:
+            - .:/go/src/postgresApi 
+        ports:
+            - 3001:3001
+        depends_on:
+            - db
+        labels:
+            kompose.service.type: LoadBalancer
+networks:
+    postgresnet:
+        driver: bridge

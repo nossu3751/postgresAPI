@@ -1,0 +1,15 @@
+get http://localhost:3001/board
+
+###
+
+post http://localhost:3001/board
+Content-Type: application/json
+
+{
+    "author": "Dumb",
+    "content": "Fuck"   
+}
+
+###
+
+get http://localhost:3001
